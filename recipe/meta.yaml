@@ -1,17 +1,21 @@
-{% set version = "0.2.6" %}
+{% set name = "dill" %}
+{% set version = "0.2.7.1" %}
+{% set file_ext = "tar.gz" %}
+{% set hash_type = "sha256" %}
+{% set hash_value = "97fd758f5fe742d42b11ec8318ecfcff8776bccacbfcec05dfd6276f5d450f73" %}
 
 package:
-    name: dill
+    name: {{ name|lower }}
     version: {{ version }}
 
 source:
-    fn: dill-{{ version }}.zip
-    url: https://pypi.io/packages/source/d/dill/dill-{{ version }}.zip
-    sha256: 6c1ccca68be483fa8c66e85a89ffc850206c26373aa77a97b83d8d0994e7f1fd
+    fn: {{ name }}-{{ version }}.{{ file_ext }}
+    url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ file_ext }}
+    {{ hash_type }}: {{ hash_value }}
 
 build:
     number: 0
-    script: python setup.py install --single-version-externally-managed --record record.txt
+    script: python setup.py install --single-version-externally-managed --record=record.txt
 
 requirements:
     build:
@@ -19,17 +23,25 @@ requirements:
         - setuptools
     run:
         - python
-        - pyreadline  # [win]
+        - pyreadline >=1.7.1  # [win]
 
 test:
     imports:
         - dill
 
 about:
-    home: http://www.cacr.caltech.edu/~mmckerns
+    home: http://www.cacr.caltech.edu/~mmckerns/dill.htm
     license: BSD 3-Clause
+    license_family: BSD
     license_file: LICENSE
-    summary: 'A utility for serialization of python objects.'
+    summary: Serialize all of python (almost)
+    description: |
+        Dill extends Python's 'pickle' module for serializing and
+        de-serializing Python objects to he majority of the built-in python
+        types.
+    doc_url: http://trac.mystic.cacr.caltech.edu/project/pathos/wiki/dill.html
+    doc_source_url: https://github.com/uqfoundation/dill/blob/master/README.md
+    dev_url: https://github.com/uqfoundation/dill
 
 extra:
     recipe-maintainers:
