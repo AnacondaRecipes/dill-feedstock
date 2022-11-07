@@ -1,12 +1,13 @@
-{% set version = "0.3.4" %}
+{% set name = "dill" %}
+{% set version = "0.3.6" %}
 
 package:
-  name: dill
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/d/dill/dill-{{ version }}.zip
-  sha256: 9f9734205146b2b353ab3fec9af0070237b6ddae78452af83d2fca84d739e675
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/dill-{{ version }}.tar.gz
+  sha256: e5db55f3687856d8fbdab002ed78544e1c4559a130302693d839dfe8f93f2373
 
 build:
   number: 0
