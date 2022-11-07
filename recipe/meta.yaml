@@ -32,7 +32,7 @@ test:
     - pip
 
 about:
-  home: http://www.cacr.caltech.edu/~mmckerns/dill.htm
+  home: https://github.com/uqfoundation/dill
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
