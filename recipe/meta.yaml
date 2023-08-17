@@ -1,17 +1,17 @@
 {% set name = "dill" %}
-{% set version = "0.3.6" %}
+{% set version = "0.3.7" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/dill-{{ version }}.tar.gz
-  sha256: e5db55f3687856d8fbdab002ed78544e1c4559a130302693d839dfe8f93f2373
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: cc1c8b182eb3013e24bd475ff2e9295af86c1a38eb1aff128dac8962a9ce3c03
 
 build:
   skip: true  # [py<37]
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
 requirements:
@@ -36,14 +36,12 @@ about:
   license: BSD-3-Clause
   license_family: BSD
   license_file: LICENSE
-  license_url: https://github.com/uqfoundation/dill/blob/master/LICENSE
   summary: Serialize all of python (almost)
   description: |
     Dill extends Python's 'pickle' module for serializing and
     de-serializing Python objects to the majority of the built-in python
     types.
-  doc_url: https://dill.readthedocs.io/en/latest/
-  doc_source_url: https://github.com/uqfoundation/dill/blob/master/docs/source/
+  doc_url: https://dill.readthedocs.io
   dev_url: https://github.com/uqfoundation/dill
 
 extra:
