@@ -28,7 +28,6 @@ requirements:
 # E   ReferenceError: weakly-referenced object no longer exists
 {% set ignored_tests = ignored_tests + " --ignore=dill/tests/test_session.py" %}
 {% set ignored_tests = ignored_tests + " --ignore=dill/tests/test_selected.py" %}
-# ReferenceError: weakly-referenced object no longer exists
 {% set ignored_tests = ignored_tests + " --ignore=dill/tests/test_objects.py" %}
 # AssertionError: assert not True
 {% set ignored_tests = ignored_tests + " --ignore=dill/tests/test_registered.py" %}
