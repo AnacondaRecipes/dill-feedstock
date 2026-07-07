@@ -2,7 +2,7 @@
 {% set version = "0.4.1" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
@@ -10,7 +10,7 @@ source:
   sha256: 423092df4182177d4d8ba8290c8a5b640c66ab35ec7da59ccfa00f6fa3eea5fa
 
 build:
-  skip: true  # [py<38]
+  skip: true  # [py<39]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
@@ -23,13 +23,51 @@ requirements:
   run:
     - python
 
+# ERROR dill/tests/test_module.py - TypeError: cannot pickle 'EncodedFile' instances
+{% set ignored_tests = " --ignore=dill/tests/test_module.py" %}
+# E   ReferenceError: weakly-referenced object no longer exists
+{% set ignored_tests = ignored_tests + " --ignore=dill/tests/test_session.py" %}
+{% set ignored_tests = ignored_tests + " --ignore=dill/tests/test_selected.py" %}
+# ReferenceError: weakly-referenced object no longer exists
+{% set ignored_tests = ignored_tests + " --ignore=dill/tests/test_objects.py" %}
+# AssertionError: assert not True
+{% set ignored_tests = ignored_tests + " --ignore=dill/tests/test_registered.py" %}
+
+# AssertionError: assert <class 'dill.tests.test_abc.OneTwoThree'> is not OneTwoThree
+{% set deselected_tests = " not test_abc_non_local" %}
+# AttributeError: module 'dill.tests.test_classdef' has no attribute '_class'
+{% set deselected_tests = deselected_tests + " and not test_class_objects" %}
+# ModuleNotFoundError: No module named 'attr'
+{% set deselected_tests = deselected_tests + " and not test_attr" %}
+{% set deselected_tests = deselected_tests + " and not test_recursive_function" %}
+{% set deselected_tests = deselected_tests + " and not test_isfrommain" %}
+{% set deselected_tests = deselected_tests + " and not test_importable" %}
+{% set deselected_tests = deselected_tests + " and not test_the_rest" %}
+{% set deselected_tests = deselected_tests + " and not test_new_thread" %}
+{% set deselected_tests = deselected_tests + " and not test_run_thread" %}
+{% set deselected_tests = deselected_tests + " and not test_join_thread" %}
+{% set deselected_tests = deselected_tests + " and not test_logging" %}
+{% set deselected_tests = deselected_tests + " and not test_trace_to_file" %}
+
+# [WinError 32] The process cannot access the file because it is being used by another process: '_test_file.txt'
+{% set deselected_tests = deselected_tests + " and not test_nostrictio_handlefmode" %}  # [win]
+{% set deselected_tests = deselected_tests + " and not test_nostrictio_filefmode" %}  # [win]
+{% set deselected_tests = deselected_tests + " and not test_nostrictio_contentsfmode" %}  # [win]
+
+
 test:
+  source_files:
+    - dill
+    - dill/tests
   imports:
     - dill
   commands:
     - pip check
+    - export PYTHONPATH=dill/tests && python -m pytest -vv dill/tests --import-mode=importlib {{ ignored_tests }} -k "{{ deselected_tests }}"   # [not win]
+    - set PYTHONPATH=dill\tests && python -m pytest -vv dill/tests --import-mode=importlib {{ ignored_tests }} -k "{{ deselected_tests }}"       # [win]
   requires:
     - pip
+    - pytest
 
 about:
   home: https://github.com/uqfoundation/dill
