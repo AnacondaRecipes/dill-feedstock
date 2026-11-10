@@ -1,6 +1,17 @@
+From f22385f3e0b34ae9aac090de2d2c26586af0cc3d Mon Sep 17 00:00:00 2001
+From: mmckerns <mmckerns@caltech.edu>
+Date: Sat, 23 May 2026 17:52:30 -0400
+Subject: [PATCH] handle missing co_lntab in 3.15.0b1
+
+---
+ dill/_dill.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/dill/_dill.py b/dill/_dill.py
+index 27ab56c6..da8aee22 100644
 --- a/dill/_dill.py
 +++ b/dill/_dill.py
-@@ -1187,8 +1187,8 @@
+@@ -1187,8 +1187,8 @@ def save_code(pickler, obj):
          with warnings.catch_warnings():
              if not OLD312a7: # issue 597
                  warnings.filterwarnings('ignore', category=DeprecationWarning)
